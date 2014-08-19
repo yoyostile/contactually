@@ -1,6 +1,6 @@
 require "test_helper"
 require "contactually"
-require "curb"
+require "rest_client"
 require "minitest/mock"
 
 describe "Contactually API method calls samples" do
@@ -17,12 +17,7 @@ describe "Contactually API method calls samples" do
   end
 
   it "can call a contact" do
-
-    #Curl.stub(:post, @mock) do
-      @contactually.post_contact
-    #end
-
-    #assert @mock.verify
+    @contactually.get_contacts
   end
 
 end
@@ -34,20 +29,20 @@ describe "Method Builder" do
   end
 
   it "should return a http_method and contactually method" do
-    assert @contactually.send(:get_methods, :post_contact) == ["post", "contact"]
+    assert @contactually.send(:get_methods, :post_contacts) == ["post", "contacts"]
   end
 
   it "should build a uri with no id" do
-    test_method = "contact"
-    test_uri = "https://www.contactually.com/api/v1/#{test_method}.json"
-    assert @contactually.send(:build_uri, "contact") == test_uri
+    test_method = "contacts"
+    test_uri = "https://www.contactually.com/api/v1/#{test_method}.json?api_key=#{@api_key}"
+    assert @contactually.send(:build_uri, "contacts") == test_uri
   end
 
-  it "should build a uri with id" do
-    test_method = "contact"
-    args_hash   = { id: 1 }
-    test_uri = "https://www.contactually.com/api/v1/#{test_method}/#{args_hash[:id]}.json"
-    assert @contactually.send(:build_uri, "contact", args_hash) == test_uri
-  end
+  # it "should build a uri with id" do
+  #   test_method = "contacts"
+  #   args_hash   = { id: 1 }
+  #   test_uri = "https://www.contactually.com/api/v1/#{test_method}/#{args_hash[:id]}.json?api_key=#{@api_key}"
+  #   assert @contactually.send(:build_uri, "contacts", args_hash) == test_uri
+  # end
 
 end

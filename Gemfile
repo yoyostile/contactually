@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem "curb"
+gem "rest_client"
 
 group :test do
   gem 'minitest'

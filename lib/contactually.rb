@@ -1,5 +1,6 @@
 require "contactually/version"
 require "json"
+require "rest_client"
 
 module Contactually
   class API
@@ -26,11 +27,8 @@ module Contactually
     def make_call(method, args={})
       http_method, contactually_method = get_methods(method)
       uri = build_uri(contactually_method, args)
-      response = Curl.send(http_method.to_sym, uri, JSON.dump(param_fields(args))) do |curl|
-        curl.headers['Accept'] = 'application/json'
-        curl.headers['Content-Type'] = 'application/json'
-      end
-      JSON.load("[#{response.body_str}]").first
+      response = RestClient.send(http_method.to_sym, uri, param_fields(args))
+      JSON.load("[#{response}]")
     end
 
     def build_uri(contactually_method, args={})
