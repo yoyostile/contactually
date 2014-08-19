@@ -28,7 +28,7 @@ module Contactually
       http_method, contactually_method = get_methods(method)
       uri = build_uri(contactually_method, args)
       response = RestClient.send(http_method.to_sym, uri, param_fields(args))
-      JSON.load("[#{response}]")
+      JSON.load response
     end
 
     def build_uri(contactually_method, args={})
