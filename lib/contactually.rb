@@ -27,7 +27,11 @@ module Contactually
     def make_call(method, args={})
       http_method, contactually_method = get_methods(method)
       uri = build_uri(contactually_method, args)
-      response = RestClient.send(http_method.to_sym, uri, param_fields(args))
+      if http_method.to_sym == :post
+        response = RestClient.send(http_method.to_sym, uri, param_fields(args).to_json, content_type: :json)
+      else
+        response = RestClient.send(http_method.to_sym, uri, param_fields(args))
+      end
       JSON.load response
     end
 
