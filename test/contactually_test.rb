@@ -38,11 +38,11 @@ describe "Method Builder" do
     assert @contactually.send(:build_uri, "contacts") == test_uri
   end
 
-  # it "should build a uri with id" do
-  #   test_method = "contacts"
-  #   args_hash   = { id: 1 }
-  #   test_uri = "https://www.contactually.com/api/v1/#{test_method}/#{args_hash[:id]}.json?api_key=#{@api_key}"
-  #   assert @contactually.send(:build_uri, "contacts", args_hash) == test_uri
-  # end
+  it "should build a uri with id" do
+    test_method = "contacts"
+    args_hash   = { id: 1 }
+    test_uri = "https://www.contactually.com/api/v1/#{test_method}/#{args_hash[:id]}.json?api_key=#{@api_key}"
+    assert @contactually.send(:build_uri, "contacts", args_hash) == test_uri
+  end
 
 end

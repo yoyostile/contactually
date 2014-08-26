@@ -4,6 +4,9 @@ require "rest_client"
 
 module Contactually
   class API
+
+    BASE_URI = "https://www.contactually.com/api/v1"
+
     def initialize(api_key)
       @api_key = api_key
     end
@@ -14,6 +17,7 @@ module Contactually
     end
 
     def method_missing(method, *args)
+      args = {} if args.class == Array
       call(method, args)
     end
 
@@ -36,8 +40,11 @@ module Contactually
     end
 
     def build_uri(contactually_method, args={})
-      #return "https://www.contactually.com/api/v1/#{contactually_method}/#{args[:id]}.json" if args[:id]
-      "https://www.contactually.com/api/v1/#{contactually_method}.json?api_key=#{@api_key}"
+      if args[:id]
+        "#{BASE_URI}/#{contactually_method}/#{args[:id]}.json?api_key=#{@api_key}"
+      else
+        "#{BASE_URI}/#{contactually_method}.json?api_key=#{@api_key}"
+      end
     end
 
     def get_methods(method)
