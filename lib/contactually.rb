@@ -17,14 +17,17 @@ module Contactually
     end
 
     def method_missing(method, *args)
-      args = {} if args.class == Array
       call(method, args)
     end
 
     private
     def param_fields(args)
       params = {}
-      params = args.first.merge(params) if args.first
+      if args.class == Array && args.first
+        params = args.first.merge(params)
+      elsif args.class != Array
+        params = args.merge(params)
+      end
       params
     end
 
@@ -40,8 +43,8 @@ module Contactually
     end
 
     def build_uri(contactually_method, args={})
-      if args[:id]
-        "#{BASE_URI}/#{contactually_method}/#{args[:id]}.json?api_key=#{@api_key}"
+      if param_fields(args)[:id]
+        "#{BASE_URI}/#{contactually_method}/#{param_fields(args)[:id]}.json?api_key=#{@api_key}"
       else
         "#{BASE_URI}/#{contactually_method}.json?api_key=#{@api_key}"
       end
